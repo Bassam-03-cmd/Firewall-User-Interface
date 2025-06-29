@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Add Rule</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div th:if="${message}" class="message">
+          <div>
+              <span th:text="${message}"></span>
+              <button onclick="closeMessage()">x</button>
+          </div>
+    </div>
+    <div class="input-card">
+      <h3>Add Rule</h3>
+      <form th:action="@{/add-rule}" th:object="${ruleForm}" method="post">
+        <label for="rulePriority">Priority</label>
+        <input type="number" id="rulePriority" th:field="*{rulePriority}" autocomplete="off" required>
+
+        <label for="protocol">Protocol</label>
+        <input type="text" id="protocol" th:field="*{protocol}" autocomplete="off" required>
+
+        <label for="sourceIP">Source IP</label>
+        <input type="text" id="sourceIP" th:field="*{sourceIP}" autocomplete="off" required>
+
+        <label for="destinationIP">Destination IP</label>
+        <input type="text" id="destinationIP" th:field="*{destinationIP}" autocomplete="off" required>
+
+        <label for="sourcePort">Source Port</label>
+        <input type="text" id="sourcePort" th:field="*{sourcePort}" autocomplete="off" required>
+
+        <label for="destinationPort">Destination Port</label>
+        <input type="text" id="destinationPort" th:field="*{destinationPort}" autocomplete="off" required>
+
+        <label for="ruleAction">Action</label>
+        <select id="ruleAction" th:field="*{ruleAction}">
+          <option th:value="ALLOW">Allow</option>
+          <option th:value="DENY">Deny</option>
+        </select>
+
+        <label for="enabled">Enabled</label>
+        <select id="enabled" th:field="*{enabled}">
+          <option th:value="true">Enabled</option>
+          <option th:value="false">Disabled</option>
+        </select>
+
+        <button type="submit">Add Rule</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+

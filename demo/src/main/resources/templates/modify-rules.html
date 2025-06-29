@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Modify Rules</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div th:if="${message}" class="message">
+          <div>
+              <span th:text="${message}"></span>
+              <button onclick="closeMessage()">x</button>
+          </div>
+    </div>
+    <form th:action="@{/modify-rules}" method="post">
+      <section class="table-container">
+        <h2>Modify Rules</h2>
+        <div class="table-search">
+          <button type="button" id="modify-rules" class="modify">Modify</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="table" id="rules-table">
+            <thead>
+              <tr>
+                <th>PRIORITY</th>
+                <th>PROTOCOL</th>
+                <th>SOURCE IP</th>
+                <th>SOURCE PORT</th>
+                <th>DESTINATION IP</th>
+                <th>DESTINATION PORT</th>
+                <th>ENABLED</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="rule : ${rules}">
+                <td>
+                  <input type="number"
+                         th:name="${'priority' + rule.ruleID}"
+                         th:value="${rule.rulePriority}"
+                         autocomplete="off"
+                         disabled>
+                </td>
+                <td>
+                  <input type="text"
+                         th:name="${'protocol' + rule.ruleID}"
+                         th:value="${rule.protocol}"
+                         autocomplete="off"
+                         disabled>
+                </td>
+                <td>
+                  <input type="text"
+                         th:name="${'sourceIP' + rule.ruleID}"
+                         th:value="${rule.sourceIP}"
+                         autocomplete="off"
+                         disabled >
+                </td>
+                <td>
+                  <input type="text"
+                         th:name="${'sourcePort' + rule.ruleID}"
+                         th:value="${(rule.sourcePort == -1)? 'ANY' : rule.sourcePort}"
+                         autocomplete="off"
+                         disabled >
+                </td>
+                <td>
+                  <input type="text"
+                         th:name="${'destinationIP' + rule.ruleID}"
+                         th:value="${rule.destinationIP}"
+                         autocomplete="off"
+                         disabled >
+                </td>
+                <td>
+                  <input type="text"
+                         th:name="${'destinationPort' + rule.ruleID}"
+                         th:value="${(rule.destinationPort == -1)? 'ANY' : rule.destinationPort}"
+                         autocomplete="off"
+                         disabled >
+                </td>
+                <td>
+                  <select th:name="${'enabled' + rule.ruleID}" disabled>
+                    <option value="1" th:selected="${rule.enabled}">Enabled</option>
+                    <option value="0" th:selected="${!rule.enabled}">Disabled</option>
+                  </select>
+                </td>
+                <td>
+                  <select th:name="${'ruleAction' + rule.ruleID}" disabled>
+                    <option value="ALLOW" th:selected="${rule.ruleAction == 'ALLOW'}">Allow</option>
+                    <option value="DENY" th:selected="${rule.ruleAction == 'DENY'}">Deny</option>
+                  </select>
+                </td>
+                <input type="hidden" name="ruleIds" th:value="${rule.ruleID}" />
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="modify">Confirm</button>
+      </section>
+    </form>
+  </div>
+
+  <th:block layout:fragment="extraScript">
+    <script th:src="@{/scripts/modify.js}"></script>
+  </th:block>
+</body>
+</html>
+
+

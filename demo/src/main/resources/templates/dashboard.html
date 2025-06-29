@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Dashboard</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div th:if="${message}" class="message">
+            <div>
+                <span th:text="${message}"></span>
+                <button onclick="closeMessage()">x</button>
+            </div>
+        </div>
+        <div>
+            <ul id="kpi">
+                <li class="kpi-card">
+                    <h3>TOTAL PACKETS</h3>
+                    <span th:text="${total_packets.n}"></span>
+                </li>
+                <li class="kpi-card">
+                    <h3>BLOCKED PACKETS</h3>
+                    <span th:text="${blocked_packets.n}"></span>
+                </li>
+                <li class="kpi-card">
+                    <h3>UNIQUE SOURCE IP'S</h3>
+                    <span th:text="${unique_source_ip.n}"></span>
+                </li>
+                <li class="kpi-card">
+                    <h3>MOST BLOCKED PORT</h3>
+                    <span th:text="|${most_blocked_port.destination_port}|"></span>
+                </li>
+            </ul>
+        </div>
+        <div id="grid">
+            <ul id="chart-grid">
+                <!-- Chart 1 -->
+                <li class="chart-container">
+                    <canvas id="trafficVolumeChart"></canvas>
+                </li>
+                <!-- Chart 2 -->
+                <li class="chart-container">
+                    <canvas id="blockedPortsChart"></canvas>
+                </li>
+                <!-- Chart 3 -->
+                <li class="chart-container">
+                    <canvas id="protocolUsageChart"></canvas>
+                </li>
+                <!-- Chart 4 -->
+                <li class="chart-container">
+                    <canvas id="topSourceIPsChart"></canvas>
+                </li>
+                <!-- Chart 5 -->
+                <li class="chart-container">
+                    <canvas id="allowedDeniedChart"></canvas>
+                </li>              
+            </ul>
+        </div>
+        <div>
+            <!-- TODO (HIDDEN INFORMATION FOR CHARTS) -->
+        </div>
+    </div>
+
+    <th:block layout:fragment="extraScript">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script th:src="@{/scripts/chart.js}"></script>
+    </th:block>
+</body>
+</html>

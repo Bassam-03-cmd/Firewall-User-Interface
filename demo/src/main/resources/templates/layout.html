@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head layout:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">MEU Guard</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}" />
+    <th:block layout:fragment="extraStyle"></th:block>
+</head>
+<body>
+    <header layout:fragment="header">
+        <nav>
+            <ul id="nav-list">
+                <li id="logo">
+                    <a th:href="@{/}">
+                       <img th:src="@{/images/logo.jpg}" alt="MEU Logo">
+                        <h1>MEU Guard</h1>
+                    </a>
+                </li>
+                <li th:if="${session.loggedInUser != null and session.loggedInUser.isPassChanged}" id="drop-down">
+                    <ul id="drop-down-list">
+                        <li class="drop-down" th:if="${session.loggedInUser.userRole == 'Admin'}" id="rules">
+                            <h2>RULES</h2>
+                            <ul class="drop-down-list" id="rules-list">
+                                <li><a th:href="@{/rules}">BROWSE</a></li>
+                                <li><a th:href="@{/add-rule}">ADD</a></li>
+                                <li><a th:href="@{/modify-rules}">MODIFY</a></li>
+                                <li><a th:href="@{/delete-rules}">DELETE</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down" th:if="${session.loggedInUser.userRole == 'Admin'}" id="users">
+                            <h2>USERS</h2>
+                            <ul class="drop-down-list" id="users-list">
+                                <li><a th:href="@{/users}">BROWSE</a></li>
+                                <li><a th:href="@{/add-user}">ADD</a></li>
+                                <li><a th:href="@{/modify-users}">MODIFY</a></li>
+                                <li><a th:href="@{/delete-users}">DELETE</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down" th:if="${session.loggedInUser.userRole == 'Admin'}" id="logs">
+                            <h2>LOGS</h2>
+                            <ul class="drop-down-list" id="logs-list">
+                                <li><a th:href="@{/logs}">BROWSE</a></li>
+                            </ul>
+                        </li>
+                    </ul>   
+                </li>
+                <li id="user" th:if="${session.loggedInUser != null and session.loggedInUser.isPassChanged}">
+                    <a th:href="@{/}">
+                        <span th:text="${session.loggedInUser.userName}"></span>
+                        <img th:src="@{/images/user.png}" alt="USER AVATAR">
+                    </a>
+                    <ul id="user-list">
+                        <li><a th:href="@{/reset-password}">RESET PASSWORD</a></li>
+                        <li><a th:href="@{/logout}">LOGOUT</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main layout:fragment="content"></main>
+
+    <footer layout:fragment="footer"></footer>
+
+    <th:block layout:fragment="extraScript"></th:block>
+    <script th:src="@{/scripts/message.js}"></script>
+</body>
+</html>

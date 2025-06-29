@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Apology</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div id="apology">
+            <img th:src="@{/images/apology.jpg}" alt="apology" />
+            <div>
+                <span th:text="${bottom}"></span>
+                <span th:text="${top}"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

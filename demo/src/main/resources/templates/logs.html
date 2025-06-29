@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Logs</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div th:if="${message}" class="message">
+            <div>
+                <span th:text="${message}"></span>
+                <button onclick="closeMessage()">x</button>
+            </div>
+        </div>
+        <section class="table-container">
+            <h2>Firewall Logs</h2>
+            <form th:action="@{/logs}" method="get" class="table-search">
+                <input type="text" name="search"
+                       class="search"
+                       autocomplete="off"
+                       placeholder="Search logs (e.g., IP, port)..."
+                       th:value="${search}" />
+                <button type="submit">Filter</button>
+                <a th:href="@{/}">Back</a>
+            </form>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Protocol</th>
+                            <th>Source</th>
+                            <th>Src MAC</th>
+                            <th>Destination</th>
+                            <th>Dest MAC</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="record : ${logs}">
+                            <td th:text="${record.timestamp}">NULL</td>
+                            <td th:text="${record.protocol}">ICMP</td>
+                            <td th:text="${record.srcIp + ':' + record.srcPort}">NULL</td>
+                            <td th:text="${record.srcMAC}">NULL</td>
+                            <td th:text="${record.dstIp + ':' + record.dstPort}">NULL</td>
+                            <td th:text="${record.dstMAC}">NULL</td>
+                            <td th:text="${record.rule != null ? record.rule.ruleAction : 'ALLOW'}">ALLOW</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

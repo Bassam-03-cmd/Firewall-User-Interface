@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Modify Users</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div th:if="${message}" class="message">
+          <div>
+              <span th:text="${message}"></span>
+              <button onclick="closeMessage()">x</button>
+          </div>
+    </div>
+    <form th:action="@{/modify-users}" method="post">
+      <section class="table-container">
+        <h2>Modify Users</h2>
+        <div class="table-search">
+          <button type="button" class="modify" id="modify-users">Modify</button>
+        </div>
+
+        <div>
+          <table class="table" id="users-table">
+            <thead>
+              <tr>
+                <th>USERNAME</th>
+                <th>EMAIL</th>
+                <th>ROLE</th>
+                <th>ACTIVE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="user : ${users}">
+                <td th:text="${user.userName}">username</td>
+                <td th:text="${user.userEmail}">email@example.com</td>
+
+                <td>
+                  <select 
+                    th:name="${'role-' + user.userId}" 
+                    disabled>
+                    <option value="Admin" 
+                      th:selected="${user.userRole == 'Admin'}">Admin
+                    </option>
+                    <option value="User" 
+                      th:selected="${user.userRole == 'User'}">User
+                    </option>
+                  </select>
+                </td>
+
+                <td>
+                  <select 
+                    th:name="${'enabled-' + user.userId}" 
+                    disabled>
+                    <option value="Active" >Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </td>
+
+                <!-- collect all IDs for the POST handler -->
+                <input type="hidden" 
+                       name="user-ids" 
+                       th:value="${user.userId}" />
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button type="submit" class="modify">Confirm</button>
+      </section>
+    </form>
+  </div>
+
+ <th:block layout:fragment="extraScript">
+    <script th:src="@{/scripts/modify.js}"></script>
+  </th:block>
+</body>
+</html>

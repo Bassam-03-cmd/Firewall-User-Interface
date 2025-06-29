@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Add User</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div th:if="${message}" class="message">
+      <div>
+        <span th:text="${message}"></span>
+        <button onclick="closeMessage()">x</button>
+      </div>
+    </div>
+    <div class="input-card">
+      <h3>Add User</h3>
+      <form th:action="@{/add-user}" th:object="${userForm}" method="post">
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{userEmail}" autocomplete="off" required />
+
+        <label for="username">Username</label>
+        <input type="text" id="username" th:field="*{userName}" autocomplete="off" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" th:field="*{userPassword}" autocomplete="off" required />
+
+        <label for="confirmation">Confirm Password</label>
+        <input type="password" id="confirmation" th:field="*{confirmPassword}" autocomplete="off" required />
+
+        <label for="role">Role</label>
+        <select id="role" th:field="*{userRole}">
+          <option th:value="Admin">Admin</option>
+          <option th:value="User">User</option>
+        </select>
+        <button type="submit">Add User</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+

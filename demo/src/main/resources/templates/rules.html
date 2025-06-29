@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Rules</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div th:if="${message}" class="message">
+            <div>
+                <span th:text="${message}"></span>
+                <button onclick="closeMessage()">x</button>
+            </div>
+        </div>
+        <section class="table-container">
+            <h2>Rules</h2>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>PRIORITY</th>
+                            <th>PROTOCOL</th>
+                            <th>SOURCE IP</th>
+                            <th>SOURCE PORT</th>
+                            <th>DESTINATION IP</th>
+                            <th>DESTINATION PORT</th>
+                            <th>ENABLED</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="rule : ${rules}">
+                            <td th:text="${rule.rulePriority}">1</td>
+                            <td th:text="${rule.protocol}">ICMP</td>
+                            <td th:text="${rule.sourceIP}">any</td>
+                            <td th:text="${(rule.sourcePort == -1)? 'ANY' : rule.sourcePort}">any</td>
+                            <td th:text="${rule.destinationIP}">any</td>
+                            <td th:text="${(rule.destinationPort == -1)? 'ANY' : rule.destinationPort}">80</td>
+                            <td>
+                                <span th:if="${rule.enabled}">ENABLED</span>
+                                <span th:unless="${rule.enabled}">DISABLED</span>
+                            </td>
+                            <td>
+                                <span th:if="${rule.ruleAction == 'ALLOW'}">ALLOWED</span>
+                                <span th:if="${rule.ruleAction == 'DENY'}">DENIED</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

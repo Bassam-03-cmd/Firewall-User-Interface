@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Login</title>
+</head>
+
+<body>
+    
+    <div layout:fragment="content">
+        <div th:if="${message}" class="message">
+            <div>
+                <span th:text="${message}"></span>
+                <button onclick="closeMessage()">x</button>
+            </div>
+        </div>
+        <div id="login" class="input-card">
+            <h3>LOG IN</h3>
+            <form th:action="@{/login}" th:object="${req}" method="post">
+                <label for="userEmail">Username</label>
+                <input type="text" th:field="*{userEmail}" autocomplete="off">
+
+                <label for="userPassword">Password</label>
+                <input type="password" th:field="*{userPassword}" autocomplete="off">
+                <br>
+                <button type="submit">LOGIN</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

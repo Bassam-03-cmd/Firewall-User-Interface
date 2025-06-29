@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Delete Rules</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div th:if="${message}" class="message">
+      <div>
+        <span th:text="${message}"></span>
+        <button onclick="closeMessage()">x</button>
+      </div>
+    </div>
+    <section class="table-container">
+      <h2>Delete Rules</h2>
+      <div style="overflow-x:auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>PRIORITY</th>
+              <th>PROTOCOL</th>
+              <th>SOURCE IP</th>
+              <th>SOURCE PORT</th>
+              <th>DESTINATION IP</th>
+              <th>DESTINATION PORT</th>
+              <th>ENABLED</th>
+              <th>ACTION</th>
+              <th>DELETE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="rule : ${rules}">
+              <td th:text="${rule.rulePriority}">1</td>
+              <td th:text="${rule.protocol}">TCP</td>
+              <td th:text="${rule.sourceIP}">any</td>
+              <td th:text="${(rule.sourcePort == -1)? 'ANY' : rule.sourcePort}">80</td>
+              <td th:text="${rule.destinationIP}">any</td>
+              <td th:text="${(rule.destinationPort == -1)? 'ANY' : rule.destinationPort}">443</td>
+              <td>
+                <span th:if="${rule.enabled}">ENABLED</span>
+                <span th:unless="${rule.enabled}">DISABLED</span>
+              </td>
+              <td>
+                <span th:if="${rule.ruleAction == 'ALLOW'}">ALLOWED</span>
+                <span th:if="${rule.ruleAction == 'DENY'}">DENIED</span>
+              </td>
+              <td>
+                <form
+                  th:action="@{/deleteRule/{id}(id=${rule.ruleID})}"
+                  method="post"
+                  onsubmit="return confirm('Really delete this rule?');">
+                  
+                  <input type="hidden" name="_method" value="delete"/>
+                  <button type="submit" class="delete-btn" title="Delete">
+                    🗑
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

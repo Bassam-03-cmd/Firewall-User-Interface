@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title layout:fragment="title">Delete Users</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+      <div th:if="${message}" class="message">
+          <div>
+            <span th:text="${message}"></span>
+            <button onclick="closeMessage()">x</button>
+          </div>
+      </div>
+    <section class="table-container">
+      <h2>Delete Users</h2>
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>USERNAME</th>
+              <th>EMAIL</th>
+              <th>ROLE</th>
+              <th>ACTIVE</th>
+              <th>DELETE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="user : ${users}">
+              <td th:text="${user.userName}">username</td>
+              <td th:text="${user.userEmail}">email@example.com</td>
+              <td th:text="${user.userRole}">User</td>
+              <td th:text="${user.userStatus}">ACTIVE</td>
+              <td>
+                <form th:action="@{/delete-users}"method="post"
+                    onsubmit="return confirm('Really delete this user?');">
+                    <input type="hidden" name="userId" th:value="${user.userId}" />
+                    <button type="submit" class="icon-button" title="Delete">
+                     🗑
+                    </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

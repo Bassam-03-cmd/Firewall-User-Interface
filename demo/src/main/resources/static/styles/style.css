@@ -1,0 +1,600 @@
+* 
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+    font-family: Arial, sans-serif;
+    background-color: beige;
+    padding-top: 75px; /* Space for fixed header */
+}
+
+header
+{
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+ul
+{
+    list-style: none;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+header, header a
+{
+    color: white; 
+}
+
+#nav-list
+{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #921b1d;
+    padding: 12px 0; 
+}
+
+#logo, #logo a, #user, #user a
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#logo a, #user a
+{
+    gap: 6px;
+    margin: 0 12px;
+    font-weight: 600;
+}
+
+#logo img
+{
+    width: 75px;
+}
+
+#user img
+{
+    width: 50px;
+    border-radius: 50%;
+}
+
+#drop-down
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 12px;
+}
+
+#drop-down:hover
+{
+    cursor: default;
+}
+
+#drop-down-list
+{
+    display: flex;
+    gap: 12px;
+}
+
+.drop-down:first-child
+{
+    height: calc(51px + ((181px- 51px) * 3 / 4));
+}
+
+.drop-down:last-child
+{
+    height: calc(51px + ((181px- 51px) * 1 / 4));
+}
+
+.drop-down
+{
+    color: white;
+    border-radius: 5px;
+    width: 100px; 
+    font-weight: 600;
+}
+
+.drop-down h2
+{
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.drop-down a
+{
+    display: flex;
+    width: 100%;
+    padding: 6px 12px;
+}
+
+.drop-down li
+{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.drop-down li:last-child
+{
+    border: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.drop-down li:hover
+{
+    background: red;
+}
+
+.drop-down-list
+{
+    display: none;
+}
+
+.drop-down:hover ul
+{
+    display: block;
+}
+
+.drop-down:hover
+{
+    background: #921b1d;
+}
+
+#user
+{
+    flex-direction: column;
+}
+
+#user-list
+{
+    display: none;
+    position: absolute; 
+    background:#921b1d;
+    border-radius: 0 0 5px 5px;     
+    width: 200px;   
+    height: 100px;  
+    top: 38px;
+    right: 0;
+}
+
+#user-list li
+{   
+    width: 100%;
+    padding: 6px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+#user-list li:last-child
+{
+    border-radius: 0 0 5px 5px;
+}
+
+#user-list li:hover
+{
+    background: red;
+}
+
+#user-list a
+{
+    display: block;
+    width: 100%;    
+    margin: 0;
+    text-align: center;
+}
+
+#user:hover #user-list
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+}
+
+#apology
+{   
+    margin: 150px auto;
+    width: 415px;
+    height: 512px;
+}
+
+#apology img
+{
+    position: absolute;
+    z-index: -1;
+}
+
+#apology div
+{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 36px;
+    color: white;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+#apology span
+{
+    width: 50%;
+    text-align: center;
+}
+
+main
+{
+    margin-top: 75px;
+}
+
+/* index */
+#kpi
+{
+    width: 100%;    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 50px 0;
+}
+
+.kpi-card
+{
+    background: white;
+    padding: 12px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    width: 20%;
+}
+
+.kpi-card h3
+{
+    color: #921b1d;
+    margin-bottom: 12px;
+}
+
+.kpi-card span
+{
+    font-weight: 600;
+}   
+
+#chart-grid 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 30px;
+}
+
+.chart-container 
+{
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    padding: 12px;
+}
+
+/* logs */
+.table-container
+{
+    background-color:whitesmoke;
+    border-radius: 5px;
+    width: 75%; 
+    margin: 100px auto;
+    overflow-x: auto;    /* ← add this */
+    padding: 24px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.table-container h2
+{
+    color: #921b1d;
+    margin-bottom: 24px;
+}
+
+.table-search
+{
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.search::placeholder
+{
+    color:#b92528;
+    font-weight: bold;
+}
+
+.search, 
+.table-search button
+{
+    height: 40px;
+    border: none;
+    outline: none;
+    padding: 0 12px;
+    font-weight: 800;
+    color:#921b1d;
+}
+
+.search
+{   
+    width: 50%;
+    border-radius: 5px 0 0 5px;
+}
+
+.table-search button
+{
+    border-radius: 0 5px 5px 0;
+}
+
+.table-search button:hover, 
+.table-search a:hover
+{
+    background: red;
+    cursor: pointer;
+}
+
+.table-search a
+{
+    margin: 0 12px;
+    height: 40px;
+    width: 60px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.table-search button, .table-search a
+{
+    background: #921b1d;
+    color: whitesmoke;
+}
+
+.table
+{
+    width: 100%;
+}
+
+.table th
+{
+    color: white;
+    background: #921b1d;
+}
+
+.table td, .table th
+{
+    text-align: left;
+    padding: 6px 18px;
+}
+
+.table, .table td, .table th
+{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table tr:nth-child(even) 
+{
+    background-color: #e7e7e7;
+}
+
+.table tr:nth-child(odd) 
+{
+    background-color: #fff;
+}
+
+.table input, .table select
+{
+    background: transparent;
+    border: none;
+    outline: none;
+    color: black;
+    font-weight: 600;
+}
+
+.table .editable
+{
+    border-bottom: 1px solid black;
+}
+
+.table button
+{
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: 5px;
+}
+
+.table svg
+{
+    width: 18px;
+    fill: #921b1d;  
+}
+
+.table svg:hover
+{
+    fill: red;
+}
+
+.table button
+{
+    cursor: pointer;
+}
+
+
+th:nth-child(3)
+{
+    width: 25%;
+}
+
+td:nth-child(3) input
+{
+    width: 100%;
+}
+
+.modify ,.table-container .modify
+{
+    background-color: #921b1d;
+    color: white;
+    border: none;
+    height: 40px;
+    padding: 6px 12px;
+    margin-top: 24px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.modify:hover
+{
+    background-color: red;
+    cursor: pointer;
+}
+
+.input-card
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 800px;
+    
+}
+
+.input-card form
+{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    background: whitesmoke;
+    border-radius: 5px;
+    font-weight: 600;
+    border-radius: 0 0 5px 5px;   
+}
+
+#login h3
+{
+    width: 400px;
+}
+
+#login form
+{
+    height: 250px;
+    width: 400px;
+    gap: 12px;
+}
+
+.input-card h3
+{
+    color:white;
+    background: #921b1d;
+    width: 500px;
+    font-size: 24px; 
+    padding: 36px 24px; 
+    border-radius: 5px 5px 0 0;  
+    text-align: center; 
+}
+
+.input-card form
+{
+    padding: 24px;
+}
+
+.input-card form input, .input-card form select, .input-card form button
+{
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    margin-bottom: 12px;
+    padding: 0 12px;
+    font-weight: bold;
+}
+
+.input-card form select option
+{
+    font-weight: bold;
+}
+
+.input-card form button
+{
+    background:#921b1d;
+    color: white;
+}
+
+.input-card form button:hover
+{
+    background-color: red;  
+    cursor: pointer;
+}
+
+.input-card form textarea
+{
+    height: 100px;
+    padding: 12px;
+    outline: none;
+    border: none;
+    margin-bottom: 24px;
+}
+
+
+.message
+{
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    background: whitesmoke;
+    width: 448px;
+    right: 20px;
+    top: 100px;
+    font-weight: 1000;
+    border-radius: 5px;
+}
+
+.message div
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.message span
+{
+    word-break: break-all;
+    margin-bottom: 24px;
+    margin: 12px;
+}
+
+.message button
+{
+    background-color: #921b1d;
+    font-weight: 1000;
+    border-radius: 5px;
+    padding: 6px;
+    margin: 12px;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.message button:hover
+{
+    background-color: red;
+}
