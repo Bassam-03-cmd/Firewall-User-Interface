@@ -12,7 +12,7 @@ public class RulesHandler {
 
     public RulesHandler(String sourceIP, String destinationIP, String sourcePort, String destinationPort,
         String protocol, String ruleAction, Integer rulePriority, boolean enabled) {
-        this.sourceIP       = sourceIP;
+        this.sourceIP  = sourceIP;
         this.destinationIP  = destinationIP;
         this.sourcePort     = sourcePort;
         this.destinationPort= destinationPort;

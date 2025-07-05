@@ -81,7 +81,7 @@ public class Rule {
     }
 
     public void setSourcePort(String sourcePort) {
-        if(sourcePort.equals("any")){
+        if(sourcePort.equalsIgnoreCase("any")){
             this.sourcePort = -1;
             return;
         }
@@ -93,7 +93,7 @@ public class Rule {
     }
 
     public void setDestinationPort(String destinationPort) {
-        if(destinationPort.equals("any")){
+        if(destinationPort.equalsIgnoreCase("any")){
             this.destinationPort = -1;
             return;
         }
