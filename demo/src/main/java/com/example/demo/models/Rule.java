@@ -27,14 +27,12 @@ public class Rule {
     private String protocol;
 
     @Column(name = "action", nullable = false)
-    //@Enumerated(EnumType.ORDINAL)
     private String ruleAction;
 
     @Column(name = "priority", nullable = false)
     private Integer rulePriority;
 
     @Column(name = "enabled", nullable = false)
-    //@Enumerated(EnumType.ORDINAL)
     private boolean enabled;
 
 

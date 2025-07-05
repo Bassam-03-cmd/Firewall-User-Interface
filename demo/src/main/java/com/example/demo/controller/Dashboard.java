@@ -6,9 +6,7 @@ import com.example.demo.repo.LogRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,71 +15,77 @@ public class Dashboard {
 
     private final LogRepository logRepo;
 
+    // Constructor injection of LogRepository
     public Dashboard(LogRepository logRepo) {
         this.logRepo = logRepo;
     }
 
+    // Root route: redirects users based on login and password reset status
     @GetMapping("/")
     public String home(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
+
+        // If user is not logged in, redirect to login page
         if (user == null) {
             return "redirect:/login";
         }
 
+        // If user has not changed their password, force password reset
         if (!user.isPassChanged()) {
             return "redirect:/reset-password";
         }
 
+        // Redirect to dashboard page if authenticated and password is changed
         return "redirect:/dashboard"; 
     }
 
+    // Dashboard route - displays packet statistics
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
-        // --- auth checks ---
         User user = (User) session.getAttribute("loggedInUser");
 
+        // Redirect if user not logged in
         if (user == null){
             return "redirect:/login";
         } 
 
+        // Redirect if user hasn't changed password
         if (!user.isPassChanged()) return "redirect:/reset-password";
 
-        // --- fetch logs ---
+        // Fetch all logs
         List<Logs> logs = logRepo.findAll();
 
-        // --- KPI 1: total packets ---
+        // Total number of packets logged
         int totalPackets = logs.size();
-        model.addAttribute("total_packets",
-            Collections.singletonMap("n", totalPackets));
+        model.addAttribute("total_packets", Collections.singletonMap("n", totalPackets));
 
-        // --- KPI 2: blocked packets ---
+        // Count of blocked packets (rule action = DENY)
         long blockedCount = logs.stream()
             .filter(e -> e.getRule() != null && e.getRule().getRuleAction().equals("DENY"))
             .count();
-        model.addAttribute("blocked_packets",
-            Collections.singletonMap("n", blockedCount));
+        model.addAttribute("blocked_packets", Collections.singletonMap("n", blockedCount));
 
-        // --- KPI 3: unique source IPs ---
+        // Number of unique source IP addresses
         long uniqueSrc = logs.stream()
             .map(Logs::getSrcIp)
             .distinct()
             .count();
-        model.addAttribute("unique_source_ip",
-            Collections.singletonMap("n", uniqueSrc));
+        model.addAttribute("unique_source_ip", Collections.singletonMap("n", uniqueSrc));
 
-        // --- KPI 4: most blocked port ---
-        // count by destination port
+        // Count denied packets grouped by destination port
         Map<Integer, Long> countByPort = logs.stream()
             .filter(e -> e.getRule() != null && e.getRule().getRuleAction().equals("DENY"))
             .collect(Collectors.groupingBy(
                 Logs::getDstPort,
                 Collectors.counting()
             ));
-        // pick the port with the max count
+
+        // Find the destination port with the highest block count
         Map.Entry<Integer, Long> top = countByPort.entrySet().stream()
             .max(Map.Entry.comparingByValue())
             .orElse(null);
 
+        // Prepare data for "most blocked port"
         Map<String, Object> mostBlockedPort = new HashMap<>();
         if (top != null) {
             mostBlockedPort.put("destination_port", top.getKey());
@@ -92,29 +96,27 @@ public class Dashboard {
         }
         model.addAttribute("most_blocked_port", mostBlockedPort);
 
-        // ... (your chart data attributes would follow here) ...
-
-        return "dashboard";
+        return "dashboard"; // returns dashboard.html
     }
 
-    //adnan code
+    // API route: returns dashboard stats as JSON
     @GetMapping("/api/dashboard/stats")
     @ResponseBody
     public Map<String, Object> getDashboardStats() {
-        List<Logs> logs = logRepo.findAll();
+        List<Logs> logs = logRepo.findAll(); // fetch all logs
 
         Map<String, Object> result = new HashMap<>();
 
-        // 1. Traffic Volume Over Time
+        // Group traffic by hour
         Map<String, Long> trafficByHour = logs.stream()
             .collect(Collectors.groupingBy(
                 l -> String.format("%02d:00", l.getTimestamp().getHour()),
-                TreeMap::new,
+                TreeMap::new, // maintains order
                 Collectors.counting()
             ));
         result.put("trafficVolume", trafficByHour);
 
-        // 2. Top Blocked Ports
+        // Get top 5 destination ports with most blocked traffic
         Map<Integer, Long> blockedPorts = logs.stream()
             .filter(l -> l.getRule() != null && "DENY".equals(l.getRule().getRuleAction()))
             .collect(Collectors.groupingBy(
@@ -122,27 +124,26 @@ public class Dashboard {
                 Collectors.counting()
             ));
         List<Map<String, Object>> topPorts = blockedPorts.entrySet().stream()
-        .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
-        .limit(5)
-        .map(e -> {
-            Map<String, Object> m = new HashMap<>();
-            m.put("port", e.getKey());
-            m.put("count", e.getValue());
-            return m;
-        })
-        .collect(Collectors.toList());
+            .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
+            .limit(5)
+            .map(e -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("port", e.getKey());
+                m.put("count", e.getValue());
+                return m;
+            })
+            .collect(Collectors.toList());
         result.put("blockedPorts", topPorts);
 
-        // 3. Protocol Usage Distribution
+        // Protocol distribution (TCP, UDP, etc...)
         Map<String, Long> protocolDist = logs.stream()
             .collect(Collectors.groupingBy(Logs::getProtocol, Collectors.counting()));
         result.put("protocolUsage", protocolDist);
 
-        // 4. Top Source IPs (Blocked)
+        // Top 5 source IPs responsible for most denied traffic
         Map<String, Long> blockedSrcIp = logs.stream()
             .filter(l -> l.getRule() != null && "DENY".equals(l.getRule().getRuleAction()))
             .collect(Collectors.groupingBy(Logs::getSrcIp, Collectors.counting()));
-        
         List<Map<String, Object>> topSrcIps = blockedSrcIp.entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(5)
@@ -155,7 +156,7 @@ public class Dashboard {
             .collect(Collectors.toList());
         result.put("topSourceIps", topSrcIps);
 
-        // 5. Allowed vs Denied
+        // Traffic split between ALLOW and DENY rules
         Map<String, Long> allowedDenied = logs.stream()
             .filter(l -> l.getRule() != null)
             .collect(Collectors.groupingBy(
@@ -164,10 +165,6 @@ public class Dashboard {
             ));
         result.put("trafficSplit", allowedDenied);
 
-        return result;
+        return result; // returns complete dashboard data as JSON
     }
-
-
-    //
-
 }

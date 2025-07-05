@@ -13,14 +13,14 @@ public class InputValidation {
 	*/
 	public static String IsValidUsername(String User_name) {
 		
-	    final int Min_Length=3;
-	    final int Max_Length=35;
-		if (User_name==null||User_name.trim().isEmpty()) {
+	    final int Min_Length = 3;
+	    final int Max_Length = 35;
+		if (User_name == null || User_name.trim().isEmpty()) {
 			return "Invalid username: Username cannot be empty";
 		}
 
-		if (User_name.length()<Min_Length|| User_name.length()>Max_Length) {
-			return "Invalid username: Username must be between "+ Min_Length+" and " +Max_Length+" characters";
+		if (User_name.length() < Min_Length || User_name.length () > Max_Length) {
+			return "Invalid username: Username must be between "+ Min_Length + " and " +Max_Length + " characters";
 		}
 
 	    if (!User_name.matches("^[a-zA-Z0-9]+$")){ 
@@ -40,7 +40,7 @@ public class InputValidation {
 	*/
 	public static String IsValidEmail(String User_email) {
 
-       if (User_email==null||User_email.isEmpty()) {
+       if (User_email == null || User_email.isEmpty()) {
 			return "Invalid Email: Email cannot be empty";
 		}
 		if (User_email.contains(" ")) {
@@ -61,14 +61,14 @@ public class InputValidation {
 		4. Password mustn't contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@#$%^&+=!).
 	*/
     public static String IsValidPassword(String User_password) {
-        final int Min_Length=8;
-		final int Max_Length=64;
+        final int Min_Length = 8;
+		final int Max_Length = 64;
        
-		if (User_password==null||User_password.isEmpty()) {
+		if (User_password == null || User_password.isEmpty()) {
 			return "Invalid Password: Password cannot be empty";
 		}
-		if (User_password.length() < Min_Length ||User_password.length()>Max_Length) {
-			return "Invalid Password: Must be between "+ Min_Length+" and " +Max_Length+" characters";
+		if (User_password.length() < Min_Length || User_password.length() > Max_Length) {
+			return "Invalid Password: Must be between "+ Min_Length + " and " + Max_Length + " characters";
 		}
 		if (User_password.contains(" ")) {
 			return "Invalid Password: Password cannot contain spaces";
@@ -78,7 +78,8 @@ public class InputValidation {
 			!User_password.matches(".*[A-Z].*")||
 			!User_password.matches(".*[0-9].*")||
 			!User_password.matches(".*[@#$%^&+=!].*")) {	
-			return "Invalid Password: Must contain at least one lowercase letter,one uppercase letter, one digit, and one special character(@#$%^&+=!)";
+			return "Invalid Password: Must contain at least one lowercase letter, one uppercase letter," + 
+			        "one digit, and one special character(@#$%^&+=!)";
 		}
         return "" ;
     }
